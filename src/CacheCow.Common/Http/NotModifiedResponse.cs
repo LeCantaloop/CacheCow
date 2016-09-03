@@ -18,15 +18,20 @@ namespace CacheCow.Common.Http
 
 
 		public NotModifiedResponse(HttpRequestMessage request, CacheControlHeaderValue cacheControlHeaderValue, EntityTagHeaderValue etag)
-			: base(HttpStatusCode.NotModified)
+            :this(request, cacheControlHeaderValue, etag, null)
+
 		{
-			if(etag!=null)
-				this.Headers.ETag = etag;
-		    this.Headers.CacheControl = cacheControlHeaderValue;
-			this.RequestMessage = request;
 		}
 
+	    public NotModifiedResponse(HttpRequestMessage request, CacheControlHeaderValue cacheControlHeaderValue, EntityTagHeaderValue etag, TimeSpan? age)
+            : base(HttpStatusCode.NotModified)
+        {
+            if (etag != null) this.Headers.ETag = etag;
+            this.Headers.CacheControl = cacheControlHeaderValue;
+            this.RequestMessage = request;
+	        if (age != null) this.Headers.Age = age;
+        }
 	}
 
-	
+
 }
